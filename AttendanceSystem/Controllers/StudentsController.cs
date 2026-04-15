@@ -70,7 +70,7 @@ namespace AttendanceSystem.Controllers
                 SchoolId = model.SchoolId.Trim(),
                 FullName = model.FullName.Trim(),
                 Grade = model.Grade?.Trim() ?? "",
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.UtcNow
             };
 
             _db.Students.Add(student);

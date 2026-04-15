@@ -19,8 +19,8 @@ namespace AttendanceSystem.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var today = DateOnly.FromDateTime(DateTime.Now);
-            var weekStart = DateOnly.FromDateTime(DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek));
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
+            var weekStart = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(-(int)DateTime.UtcNow.DayOfWeek));
 
             var todayLogs = await _db.AttendanceLogs
                 .Include(a => a.Student)
@@ -55,7 +55,7 @@ namespace AttendanceSystem.Controllers
 
         private string GetTimeAgo(DateTime time)
         {
-            var diff = DateTime.Now - time;
+            var diff = DateTime.UtcNow - time;
             if (diff.TotalMinutes < 1) return "Just now";
             if (diff.TotalMinutes < 60) return $"{(int)diff.TotalMinutes} min ago";
             if (diff.TotalHours < 24) return $"{(int)diff.TotalHours} hour(s) ago";

@@ -48,7 +48,7 @@ namespace AttendanceSystem.Controllers
             }
 
             // Check if already checked in today
-            var today = DateOnly.FromDateTime(DateTime.Now);
+            var today = DateOnly.FromDateTime(DateTime.UtcNow);
             var alreadyCheckedIn = await _db.AttendanceLogs
                 .AnyAsync(a => a.StudentId == student.Id && a.Date == today);
 
@@ -62,7 +62,7 @@ namespace AttendanceSystem.Controllers
                 return View("Index", model);
             }
 
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
             var currentDay = now.DayOfWeek;
             var currentTime = now.TimeOfDay;
 

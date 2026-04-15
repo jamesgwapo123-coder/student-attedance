@@ -17,7 +17,7 @@ namespace AttendanceSystem.Models
         [StringLength(20)]
         public string Grade { get; set; } = string.Empty;
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public ICollection<AttendanceLog> AttendanceLogs { get; set; } = new List<AttendanceLog>();
     }
