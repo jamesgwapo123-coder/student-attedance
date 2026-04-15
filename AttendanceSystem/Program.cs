@@ -9,8 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // Configure SQLite
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? "Data Source=attendance.db";
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=attendance.db"));
+    options.UseSqlite(connectionString));
 
 // Configure Cookie Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -22,9 +24,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 // Bind Kestrel to all interfaces and use middleware to restrict access to local network ranges only.
+var portString = Environment.GetEnvironmentVariable("PORT");
+var port = int.TryParse(portString, out var p) ? p : 5274;
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5274);
+    options.ListenAnyIP(port);
 });
 
 var app = builder.Build();
