@@ -8,11 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services
 builder.Services.AddControllersWithViews();
 
-// Configure SQLite
+// Configure PostgreSQL
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
-    ?? "Data Source=attendance.db";
+    ?? throw new InvalidOperationException("PostgreSQL Connection String 'DefaultConnection' not found.");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(connectionString));
+    options.UseNpgsql(connectionString));
 
 // Configure Cookie Authentication
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
