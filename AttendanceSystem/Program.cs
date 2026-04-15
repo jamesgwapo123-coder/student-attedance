@@ -48,16 +48,20 @@ builder.WebHost.ConfigureKestrel(options =>
 var app = builder.Build();
 
 // Auto-create database
-using (var scope = app.Services.CreateScope())
+try
 {
+    using var scope = app.Services.CreateScope();
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+    Console.WriteLine("Database initialized successfully.");
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Database init error: {ex.Message}");
 }
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-}
+// Show detailed errors (temporary for debugging on Render)
+app.UseDeveloperExceptionPage();
 
 app.UseStaticFiles();
 app.UseRouting();
